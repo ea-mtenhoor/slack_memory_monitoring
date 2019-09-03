@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /root/monitoring
-slackUrl="https://hooks.slack.com/services/EXAMPLE/EXAMPLE/example234example" #app_name, #challen
+slackUrl="https://hooks.slack.com/services/EXAMPLE/EXAMPLE/example234example" #app_name, #channel
 totalMem="$(free -g | grep Mem | awk '{print $2}')"
 freeMem="$(free -g | grep Mem | awk '{print $3}')"
 percentMem=`echo "result = ($freeMem/$totalMem)*100; scale=0; result / 1" | bc -l`
