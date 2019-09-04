@@ -1,8 +1,8 @@
 # slack_memory_monitoring
-This script monitors memory utilization on a linux server, and sends notifications to a slack channel when thresholds are crossed.
+This script monitors memory utilization on a linux server, and sends notifications to a slack channel when thresholds are crossed.  The script will write out a file named previousState every time a threshold is crossed.
 
 ## Usage
-It is recommended to run this script as a cronjob every minute.  The script will write out a file named previousState every time it runs.  This file allows it to determine if a threshold has been crossed, as compared to the previous run.
+It is recommended to run this script as a cronjob every minute.
 
 `* * * * * /root/monitoring/check_memory_v2.sh`
 
