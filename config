@@ -1,0 +1,4 @@
+export bufferZone=4
+export warningPoint=80
+export criticalPoint=95
+export slackUrl="https://hooks.slack.com/services/XXXXXX/YYYYYYYY/zzzzzzzzzzzzzzzzzzzzzz" #server_name, #slack_channel
