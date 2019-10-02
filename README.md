@@ -1,7 +1,7 @@
 # slack_memory_monitoring
 This script monitors memory utilization on a linux server, and sends notifications to a slack channel when thresholds are crossed.  The script will write out a file named previousState every time a threshold is crossed.
 
-## required software
+## Required software
 This script requires `bc` and `smem`.
 
 ## Usage
