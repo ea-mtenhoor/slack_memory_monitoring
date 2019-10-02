@@ -1,16 +1,12 @@
 #!/bin/bash
 
-cd /root/monitoring
-slackUrl="https://hooks.slack.com/services/EXAMPLE/EXAMPLE/example234example" #app_name, #channel
+cd $(dirname $0)
 totalMem="$(free -g | grep Mem | awk '{print $2}')"
 freeMem="$(free -g | grep Mem | awk '{print $3}')"
 percentMem=`echo "result = ($freeMem/$totalMem)*100; scale=0; result / 1" | bc -l`
-bufferZone=4
-warningPoint=80
-criticalPoint=95
+. config
 
 #State: okay=1  warning=2  critical=3
-
 if [ $percentMem -lt $warningPoint ]; then currentState=1; fi
 if [ $percentMem -ge $warningPoint ]; then currentState=2; fi
 if [ $percentMem -ge $criticalPoint ]; then currentState=3; fi
@@ -30,11 +26,11 @@ if [ $currentState -gt $previousState ]; then
         case "$currentState" in
                 2)
                         echo $currentState > previousState
-                        curl -X POST -H 'Content-type: application/json' --data '{"attachments": [{"text":"WARNING! Memory usage high! '"$percentMem%"' <!here>","color":"warning"}]}' $slackUrl > /dev/null 2>&1
+                        curl -X POST -H 'Content-type: application/json' --data '{"attachments": [{"text":"WARNING! Memory usage high! '"$percentMem%"' <!here>","color":"warning"},{"text": " ", "fields": [{"title": "Top 5 Users", "value": "```'"${topUsers}"'```", "short": "true"}]}]}' $slackUrl > /dev/null 2>&1
                         ;;
                 3)
                         echo $currentState > previousState
-                        curl -X POST -H 'Content-type: application/json' --data '{"attachments": [{"text":"CRITICAL! Memory usage very high! '"$percentMem%"' <!here>","color":"danger"}]}' $slackUrl > /dev/null 2>&1
+                        curl -X POST -H 'Content-type: application/json' --data '{"attachments": [{"text":"CRITICAL! Memory usage very high! '"$percentMem%"' <!here>","color":"danger"},{"text": " ", "fields": [{"title": "Top 5 Users", "value": "```'"${topUsers}"'```", "short": "true"}]}]}' $slackUrl > /dev/null 2>&1
                         ;;
         esac
 fi
@@ -64,4 +60,5 @@ if [ ! -z "$1" ]; then
         echo currentState = $currentState
         echo bufferState = $bufferState
         echo previousState = $previousState
+	echo topUsers = "${topUsers}"
 fi
